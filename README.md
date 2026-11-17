@@ -171,7 +171,7 @@ The transistor-level schematic is designed using a parallel PMOS network and a s
 
 **CMOS NAND Schematic**
 
-![CMOS NAND Schematic](NAND_schematic.jpeg)
+![CMOS NAND Schematic](Nand_schematic.jpeg)
 
 ### Layout Design
 
@@ -179,7 +179,7 @@ The physical layout is implemented by arranging the PMOS and NMOS transistors ac
 
 **CMOS NAND Layout**
 
-![CMOS NAND Layout](NAND_layout.jpeg)
+![CMOS NAND Layout](Nand_layout.jpeg)
 
 ---
 
