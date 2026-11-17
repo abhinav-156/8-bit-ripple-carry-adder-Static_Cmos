@@ -77,8 +77,8 @@ The project demonstrates the complete custom digital IC design flow, starting fr
 | Statistical Analysis | Monte Carlo |
 | Monte Carlo Outputs | P1 to P8 |
 | Simulation Input Condition | A = 1, B = 1, Cin = 1 |
-| Technology Node | [Specify your PDK technology node] |
-| Supply Voltage | [Specify your simulation supply voltage] |
+| Technology Node | 180nm technology |
+| Supply Voltage |VDD = 1.8V |
 
 ---
 
@@ -131,7 +131,7 @@ The schematic is implemented by connecting the PMOS transistor between VDD and t
 
 **CMOS Inverter Schematic**
 
-![CMOS Inverter Schematic](CMOS_Basic_Gates/Inverter/Schematic.png)
+![CMOS Inverter Schematic](Inverter_schematic.jpeg)
 
 ### Layout Design
 
@@ -139,7 +139,7 @@ The physical layout is developed using the corresponding PMOS and NMOS transisto
 
 **CMOS Inverter Layout**
 
-![CMOS Inverter Layout](CMOS_Basic_Gates/Inverter/Layout.png)
+![CMOS Inverter Layout](Inverter_layout.jpeg)
 
 ---
 
@@ -171,7 +171,7 @@ The transistor-level schematic is designed using a parallel PMOS network and a s
 
 **CMOS NAND Schematic**
 
-![CMOS NAND Schematic](CMOS_Basic_Gates/NAND/Schematic.png)
+![CMOS NAND Schematic](NAND_schematic.jpeg)
 
 ### Layout Design
 
@@ -179,7 +179,7 @@ The physical layout is implemented by arranging the PMOS and NMOS transistors ac
 
 **CMOS NAND Layout**
 
-![CMOS NAND Layout](CMOS_Basic_Gates/NAND/Layout.png)
+![CMOS NAND Layout](NAND_layout.jpeg)
 
 ---
 
@@ -214,7 +214,7 @@ The circuit is implemented using the required NOR and inverter stages to obtain 
 
 **CMOS OR Schematic**
 
-![CMOS OR Schematic](CMOS_Basic_Gates/OR/Schematic.png)
+![CMOS OR Schematic](OR_schematic.jpeg)
 
 ### Layout Design
 
@@ -222,7 +222,7 @@ The physical layout follows the implemented NOR-inverter structure, with appropr
 
 **CMOS OR Layout**
 
-![CMOS OR Layout](CMOS_Basic_Gates/OR/Layout.png)
+![CMOS OR Layout](OR_layout.jpeg)
 
 ---
 
@@ -253,7 +253,7 @@ The XOR gate is implemented using a transistor-level CMOS network to realize the
 
 **CMOS XOR Schematic**
 
-![CMOS XOR Schematic](CMOS_Basic_Gates/XOR/Schematic.png)
+![CMOS XOR Schematic](XOR_schematic.jpeg)
 
 ### Layout Design
 
@@ -261,7 +261,7 @@ The physical layout is created from the XOR transistor-level schematic. The PMOS
 
 **CMOS XOR Layout**
 
-![CMOS XOR Layout](CMOS_Basic_Gates/XOR/Layout.png)
+![CMOS XOR Layout](XOR_layout.jpeg)
 
 ---
 
@@ -293,7 +293,7 @@ The Half Adder schematic is implemented by combining XOR and AND logic functions
 
 **Half Adder Schematic**
 
-![Half Adder Schematic](Half_Adder/Schematic.png)
+![Half Adder Schematic](Half_adder_schematic.jpeg)
 
 ### Layout Design
 
@@ -301,7 +301,7 @@ The physical layout integrates the logic networks required for Sum and Carry gen
 
 **Half Adder Layout**
 
-![Half Adder Layout](Half_Adder/Layout.png)
+![Half Adder Layout](Half_adder_layout.jpeg)
 
 ---
 
@@ -348,7 +348,7 @@ The Full Adder is implemented using XOR-based Sum generation and carry-generatio
 
 **Full Adder Schematic**
 
-![Full Adder Schematic](Full_Adder/Schematic.png)
+![Full Adder Schematic](Full_adder_schematic.jpeg)
 
 ### Layout Design
 
@@ -356,7 +356,7 @@ The physical layout is developed from the Full Adder transistor-level schematic.
 
 **Full Adder Layout**
 
-![Full Adder Layout](Full_Adder/Layout.png)
+![Full Adder Layout](Full_adder_layout.jpeg)
 
 ---
 
@@ -481,7 +481,7 @@ The schematic represents the complete transistor-level implementation of the 8-b
 
 **8-Bit Ripple Carry Adder Schematic**
 
-![8-Bit RCA Schematic](8_Bit_Ripple_Carry_Adder/Schematic.png)
+![8-Bit RCA Schematic](8bit_Riplle_Carry_Adder_schematic)
 
 ## 9.6 Simulation and Functional Verification
 
@@ -523,7 +523,7 @@ This confirms the expected Full Adder behavior for the selected input condition.
 
 **8-Bit RCA Simulation Waveform**
 
-![8-Bit RCA Simulation](8_Bit_Ripple_Carry_Adder/Simulation.png)
+![8-Bit RCA Simulation](Result.jpeg)
 
 ### Simulation Verification
 
@@ -549,26 +549,9 @@ The final layout represents the physical implementation of the complete 8-bit RC
 
 **8-Bit Ripple Carry Adder Layout**
 
-![8-Bit RCA Layout](8_Bit_Ripple_Carry_Adder/Layout.png)
+![8-Bit RCA Layout](8bit_Ripple_Carry_Adder_layout.jpeg)
 
-## 9.8 Design Rule Check (DRC)
-
-Design Rule Check is performed on the completed RCA layout to verify whether the layout satisfies the physical design rules of the selected technology.
-
-The verification checks geometrical constraints such as:
-
-- Minimum width.
-- Minimum spacing.
-- Enclosure requirements.
-- Layer-specific design constraints.
-
-DRC helps identify physical layout violations before proceeding to further verification.
-
-**8-Bit RCA DRC Result**
-
-![8-Bit RCA DRC](DRC_Reports/RCA_DRC.png)
-
-## 9.9 Monte Carlo Analysis
+## 9.8 Monte Carlo Analysis
 
 ### Introduction
 
@@ -596,10 +579,6 @@ The setup includes:
 6. Running the analysis.
 7. Observing the output waveforms for P1 to P8.
 
-**Monte Carlo Simulation Setup**
-
-![Monte Carlo Setup](Monte_Carlo_Analysis/Monte_Carlo_Setup.png)
-
 ### Analysis of Eight Output Nodes
 
 The Monte Carlo analysis is performed for all eight output nodes.
@@ -621,9 +600,11 @@ If the output waveforms remain within the expected logic levels and maintain the
 
 Any noticeable waveform spread, timing shift, or incorrect logic-level transition can indicate sensitivity to device parameter variations.
 
-**Monte Carlo Waveforms – P1 to P8**
+**Monte Carlo Waveforms – P0 to P8**
 
-![Monte Carlo P1 to P8 Waveforms](Monte_Carlo_Analysis/Monte_Carlo_Waveforms.png)
+![Monte Carlo P1 to P8 Waveforms](Monte_1.jpeg)
+![Monte Carlo P1 to P8 Waveforms](Monte_P8.jpeg)
+
 
 ### Significance of Monte Carlo Analysis
 
