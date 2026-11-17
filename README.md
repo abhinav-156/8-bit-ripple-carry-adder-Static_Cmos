@@ -1,338 +1,360 @@
-<div align="center">
+# ⚡ 8-Bit Ripple Carry Adder Design Using CMOS Technology
 
-# ⚡ 8-Bit Ripple Carry Adder
-### Full-Custom CMOS Design in Cadence Virtuoso · 180 nm (gpdk180)
+### Transistor-Level Schematic Design | Physical Layout | DRC Verification | Monte Carlo Analysis
 
-*From transistor-level schematics → DRC-clean layouts → transient & Monte Carlo analysis*
-
-![Tool](https://img.shields.io/badge/Tool-Cadence%20Virtuoso%206.1.8-red)
-![Technology](https://img.shields.io/badge/Technology-gpdk180%20(180nm)-blue)
-![Simulator](https://img.shields.io/badge/Simulator-Spectre-orange)
-![DRC](https://img.shields.io/badge/DRC-Assura%20Clean-brightgreen)
-![Monte Carlo](https://img.shields.io/badge/Monte%20Carlo-100%20Samples-purple)
-![Status](https://img.shields.io/badge/Status-Completed-success)
-
-</div>
+<p align="center">
+  <b>A Complete CMOS Digital Circuit Design Project Using Cadence Virtuoso</b>
+</p>
 
 ---
 
-## 📑 Table of Contents
-1. [Overview](#-overview)
-2. [Key Features](#-key-features)
-3. [Design Hierarchy](#-design-hierarchy)
-4. [Theory & Logic Equations](#-theory--logic-equations)
-5. [Transistor-Level Design](#-transistor-level-design)
-6. [Schematics](#-schematics)
-7. [Layouts](#-layouts)
-8. [Simulation Results](#-simulation-results)
-9. [Design Summary](#-design-summary)
-10. [Tools & Environment](#-tools--environment)
-11. [Repository Structure](#-repository-structure)
-12. [How to Reproduce](#-how-to-reproduce)
-13. [Future Work](#-future-work)
-14. [Author](#-author)
+## 📌 Project Overview
 
----
+This project focuses on the transistor-level design and physical implementation of an **8-bit Ripple Carry Adder (RCA)** using CMOS technology in Cadence Virtuoso.
 
-## 📌 Overview
+The implementation starts with fundamental CMOS logic gates and progressively develops more complex arithmetic circuits, ultimately integrating them into an 8-bit Ripple Carry Adder.
 
-This mini-project implements an **8-bit Ripple Carry Adder (RCA)** using a **bottom-up, full-custom design flow**. Every block, from the basic inverter to the final 8-bit adder, was designed at **transistor level**, laid out, verified with **DRC**, and then characterised with **transient** and **Monte Carlo** simulations.
+The project covers schematic design, circuit simulation, physical layout development, Design Rule Check (DRC), and Monte Carlo analysis.
 
-The design is built hierarchically so that each lower-level cell is reused in the next level:
+The primary objective is to understand the complete digital VLSI design flow, from individual transistor-level logic gates to a multi-bit arithmetic circuit.
 
-```
-Inverter ─► NAND ─► OR ─► XOR ─► Half Adder ─► Full Adder ─► 8-bit Ripple Carry Adder
-```
+## 🛠️ Tools & Technology
 
----
+| Parameter | Specification |
+|:---|:---|
+| EDA Tool | Cadence Virtuoso |
+| Technology Node | 45 nm CMOS (GPdk45, if applicable) |
+| Design Methodology | Full-Custom CMOS Design |
+| Design Level | Transistor-Level |
+| Circuit Type | Combinational Digital Circuits |
+| Physical Verification | DRC |
+| Statistical Analysis | Monte Carlo Simulation |
 
-## ✨ Key Features
+## 🏗️ Project Implementation
 
-- ✅ Fully **transistor-level** CMOS implementation of every gate (no behavioural models)
-- ✅ **Hierarchical design**: INV → NAND → OR → XOR → HA → FA → 8-bit RCA
-- ✅ **Schematic + Layout** created for every cell
-- ✅ **DRC clean**: *"No DRC errors found"* using **Assura DRC** on all layouts
-- ✅ **Transient analysis** of all outputs (P0 – P8) using Spectre in ADE
-- ✅ **Monte Carlo analysis** (100 samples) in ADE XL to study process variation
-- ✅ Implemented in the **180 nm generic PDK (gpdk180)**
+The project is implemented in the following stages:
 
----
+### 1. CMOS Inverter
 
-## 🧩 Design Hierarchy
+**Objective:** Design and implement a CMOS inverter using one PMOS and one NMOS transistor.
 
-```mermaid
-graph TD
-    RCA["8-bit Ripple Carry Adder<br/>(8 × FA)"] --> FA["Full Adder<br/>(2 × HA + OR)"]
-    FA --> HA["Half Adder<br/>(XOR + NAND + INV)"]
-    FA --> OR["OR Gate"]
-    HA --> XOR["XOR Gate"]
-    HA --> NAND["NAND Gate"]
-    HA --> INV["Inverter"]
-    XOR --> INV
-    OR --> INV
-```
+**Boolean Expression:**
 
----
+\[
+Y=\overline{A}
+\]
 
-## 📐 Theory & Logic Equations
+**Design Work:**
+- Transistor-level schematic design.
+- Functional simulation.
+- Physical layout implementation.
+- Layout verification.
 
-### Half Adder
-| A | B | Sum | Carry |
-|:-:|:-:|:---:|:-----:|
-| 0 | 0 | 0 | 0 |
-| 0 | 1 | 1 | 0 |
-| 1 | 0 | 1 | 0 |
-| 1 | 1 | 0 | 1 |
+### 2. CMOS NAND Gate
 
-```
-Sum   = A ⊕ B
-Carry = A · B   (implemented as NAND followed by INV)
-```
+**Objective:** Implement a 2-input NAND gate using CMOS transistor logic.
 
-### Full Adder
-| A | B | Cin | Sum | Cout |
-|:-:|:-:|:---:|:---:|:----:|
-| 0 | 0 | 0 | 0 | 0 |
-| 0 | 0 | 1 | 1 | 0 |
-| 0 | 1 | 0 | 1 | 0 |
-| 0 | 1 | 1 | 0 | 1 |
-| 1 | 0 | 0 | 1 | 0 |
-| 1 | 0 | 1 | 0 | 1 |
-| 1 | 1 | 0 | 0 | 1 |
-| 1 | 1 | 1 | 1 | 1 |
+**Boolean Expression:**
 
-```
-Sum  = A ⊕ B ⊕ Cin
-Cout = A·B + Cin·(A ⊕ B)
-```
+\[
+Y=\overline{A\cdot B}
+\]
 
-Built from **two Half Adders + one OR gate**: HA1 adds `A + B`, HA2 adds the result with `Cin`, and the OR gate combines both carries.
+**Design Work:**
+- PMOS parallel network.
+- NMOS series network.
+- Schematic simulation.
+- Physical layout implementation.
 
-### 8-bit Ripple Carry Adder
-Eight Full Adders are chained so that `Cout` of stage *i* drives `Cin` of stage *i+1*:
+### 3. CMOS OR Gate
 
-```
-S[i]    = A[i] ⊕ B[i] ⊕ C[i]
-C[i+1]  = A[i]·B[i] + C[i]·(A[i] ⊕ B[i])
-```
+**Objective:** Design a 2-input OR gate using CMOS logic.
 
-Outputs **P0 – P7** are the sum bits and **P8** is the final carry-out.
+**Boolean Expression:**
 
----
+\[
+Y=A+B
+\]
 
-## 🔬 Transistor-Level Design
+**Design Work:**
+- Transistor-level circuit implementation.
+- Functional verification.
+- Physical layout development.
 
-All devices use the minimum channel length of the 180 nm process (`L = 180 nm`).
+### 4. CMOS XOR Gate
 
-| Cell | Topology | Transistors | PMOS W | NMOS W |
-|------|----------|:-----------:|:------:|:------:|
-| **Inverter** | Static CMOS | 2 | 2 µm | 1 µm |
-| **NAND** | 2-input static CMOS | 4 | 2 µm | 1 µm |
-| **OR** | NOR stage + Inverter | 6 | 2 µm | 1 µm |
-| **XOR** | 4 PMOS + 4 NMOS + 2 input inverters (15 fF output load) | 12 | 2 µm | 1 µm |
-| **Half Adder** | XOR + NAND + INV | 18 | – | – |
-| **Full Adder** | 2 × HA + OR | 42 | – | – |
-| **8-bit RCA** | 8 × FA | **336** | – | – |
+**Objective:** Implement a 2-input XOR gate for arithmetic logic operations.
 
----
+**Boolean Expression:**
 
-## 🖼️ Schematics
+\[
+Y=A\oplus B
+\]
 
-| Inverter | NAND | OR |
+**Truth Table:**
+
+| A | B | Output |
 |:---:|:---:|:---:|
-| ![inv](docs/images/schematic/01_inv_schematic.png) | ![nand](docs/images/schematic/02_nand_schematic.png) | ![or](docs/images/schematic/03_or_schematic.png) |
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
 
-| XOR | Half Adder |
-|:---:|:---:|
-| ![xor](docs/images/schematic/04_xor_schematic.png) | ![ha](docs/images/schematic/05_half_adder_schematic.png) |
+**Design Work:**
+- CMOS transistor-level implementation.
+- Functional simulation.
+- Physical layout development.
 
-| Full Adder |
-|:---:|
-| ![fa](docs/images/schematic/06_full_adder_schematic.png) |
+### 5. Half Adder (HA)
 
-### 8-bit Ripple Carry Adder (Top Level)
-![rca](docs/images/schematic/07_8bit_ripple_schematic.png)
+**Objective:** Design a Half Adder to perform the addition of two single-bit binary inputs.
+
+**Boolean Expressions:**
+
+Sum:
+
+\[
+S=A\oplus B
+\]
+
+Carry:
+
+\[
+C=A\cdot B
+\]
+
+**Design Work:**
+- Half Adder schematic design.
+- Sum and Carry verification.
+- Physical layout implementation.
+
+### 6. Full Adder (FA)
+
+**Objective:** Design a Full Adder capable of adding two binary inputs along with an incoming carry.
+
+**Boolean Expressions:**
+
+Sum:
+
+\[
+S=A\oplus B\oplus C_{in}
+\]
+
+Carry:
+
+\[
+C_{out}=AB+C_{in}(A\oplus B)
+\]
+
+**Design Work:**
+- Full Adder transistor-level schematic.
+- Functional simulation.
+- Physical layout implementation.
+- Carry generation and propagation verification.
+
+### 7. 8-Bit Ripple Carry Adder
+
+**Objective:** Design and implement an 8-bit Ripple Carry Adder using cascaded Full Adder stages.
+
+**Architecture:**
+
+The 8-bit RCA consists of eight Full Adders connected in series. The carry output from each stage is propagated to the carry input of the next stage.
+
+**Block-Level Architecture:**
+
+```text
+ A0, B0       A1, B1                    A7, B7
+    |            |                         |
+    v            v                         v
+ +------+ C1  +------+ C2          +------+
+ | FA 0 |---->| FA 1 |----> ... --->| FA 7 |
+ +------+    +------+              +------+
+    |            |                     |
+    S0           S1                    S7
+
+Cin ------------------------------------->
+
+Final Carry Output = Cout
+```
+
+**Output Equations:**
+
+\[
+S_i=A_i\oplus B_i\oplus C_i
+\]
+
+\[
+C_{i+1}=A_iB_i+C_i(A_i\oplus B_i)
+\]
+
+For an 8-bit addition:
+
+\[
+\{C_{out},S_7,\ldots,S_0\}=A+B+C_{in}
+\]
+
+**Design Work:**
+- Full Adder integration.
+- 8-bit RCA schematic design.
+- Functional verification.
+- Physical layout implementation.
+- DRC verification.
+- Monte Carlo analysis.
 
 ---
 
-## 🏗️ Layouts
+## 🔬 Design & Verification Flow
 
-All layouts were drawn in **Virtuoso Layout Suite XL** and checked with **Assura DRC**. Every cell reports **"No DRC errors found."**
+The following design flow was followed throughout the project:
 
-| Inverter | NAND |
-|:---:|:---:|
-| ![inv layout](docs/images/layout/08_inv_layout.png) | ![nand layout](docs/images/layout/09_nand_layout.png) |
+```text
+       CMOS Logic Gates
+              |
+              v
+      Inverter, NAND,
+        OR and XOR
+              |
+              v
+       Half Adder
+              |
+              v
+       Full Adder
+              |
+              v
+    8-Bit Ripple Carry
+          Adder
+              |
+              v
+       Schematic Design
+              |
+              v
+       Circuit Simulation
+              |
+              v
+         Layout Design
+              |
+              v
+       DRC Verification
+              |
+              v
+       Monte Carlo Analysis
+              |
+              v
+       Final Verification
+```
 
-| OR | XOR |
-|:---:|:---:|
-| ![or layout](docs/images/layout/10_or_layout.png) | ![xor layout](docs/images/layout/11_xor_layout.png) |
+## 📊 Verification and Analysis
 
-| Half Adder | Full Adder |
-|:---:|:---:|
-| ![ha layout](docs/images/layout/12_half_adder_layout.png) | ![fa layout](docs/images/layout/13_full_adder_layout.png) |
+### Schematic Verification
+Functional simulations are performed to verify the logical operation of the designed circuits.
 
-### 8-bit Ripple Carry Adder Layout (DRC Clean ✅)
-![rca layout](docs/images/layout/14_8bit_ripple_layout.png)
+### Physical Layout Verification
+Layouts are developed for individual logic gates, arithmetic circuits, and the 8-bit Ripple Carry Adder.
 
-### DRC Summary
-| Cell | DRC Result |
-|------|:----------:|
-| Inverter | ✅ No errors |
-| NAND | ✅ No errors |
-| OR | ✅ No errors |
-| XOR | ✅ No errors |
-| Half Adder | ✅ No errors |
-| Full Adder | ✅ No errors |
-| 8-bit Ripple Carry Adder | ✅ No errors |
+### Design Rule Check (DRC)
+DRC is performed to verify layout compliance with the design rules of the selected technology.
 
----
+**Final DRC Status:** [Enter actual violation count / clean status]
 
-## 📈 Simulation Results
+### Monte Carlo Analysis
+Monte Carlo simulations are performed to study the impact of statistical process variations on circuit performance.
 
-### 1️⃣ Transient Analysis
-Transient simulation (`tran`, 0 – 100 ns) using **Spectre** in ADE L. All sum outputs **P0 – P7** and the carry-out **P8** were plotted in Virtuoso Visualization & Analysis XL.
+The analysis provides insight into:
+- Device parameter variations.
+- Output response variations.
+- Statistical circuit behavior.
+- Design robustness.
 
-![transient](docs/images/simulation/15_transient_response.png)
-
-### 2️⃣ Monte Carlo Analysis
-Monte Carlo analysis was run in **ADE XL** with **100 samples**, varying process and mismatch parameters. The measured quantity is `ymax(VT("/Pn"))`, the peak output voltage on each output.
-
-![mc all](docs/images/simulation/16_monte_carlo_P0_P7.png)
-
-**Detailed histogram for the carry-out (P8):**
-
-![mc p8](docs/images/simulation/17_monte_carlo_P8.png)
-
-| Statistic (P8) | Value |
-|----------------|:-----:|
-| Samples | 100 |
-| Mean (µ) | 1.85815 V |
-| Std. Deviation (σ) | 3.899 mV |
-| Skewness | −0.342 |
-| Kurtosis | 0.709 |
-| Jarque–Bera | 4.046 |
-
-**Peak output voltage across all outputs** *(values read from the histograms)*:
-
-| Output | Mean (V) | σ (approx.) |
-|:------:|:--------:|:-----------:|
-| P0 | 1.8157 | ~1.6 mV |
-| P1 | 1.8212 | ~2.1 mV |
-| P2 | 1.8190 | ~2.0 mV |
-| P3 | 1.8185 | ~2.0 mV |
-| P4 | 1.8183 | ~2.0 mV |
-| P5 | 1.8183 | ~2.0 mV |
-| P6 | 1.8183 | ~2.0 mV |
-| P7 | 1.8183 | ~2.0 mV |
-| P8 (Cout) | 1.8582 | 3.9 mV |
-
-**Observation:** The spread of the output voltage stays within a few millivolts across all 100 samples, and the Jarque–Bera value for P8 is low (≈ 4), which indicates a distribution close to Gaussian. This shows the adder is robust against process variation.
-
----
-
-## 📊 Design Summary
-
-| Parameter | Details |
-|-----------|---------|
-| Technology | gpdk180 (180 nm) |
-| Adder width | 8 bits |
-| Architecture | Ripple carry (8 cascaded full adders) |
-| Total transistors | 336 |
-| Channel length | 180 nm |
-| PMOS / NMOS width | 2 µm / 1 µm |
-| Verification | Schematic simulation, DRC, Monte Carlo |
-| DRC | Clean on all cells |
-| Monte Carlo samples | 100 |
-
----
-
-## 🛠️ Tools & Environment
-
-| Purpose | Tool |
-|---------|------|
-| Schematic capture | Cadence Virtuoso Schematic Editor L / XL |
-| Layout | Cadence Virtuoso Layout Suite XL |
-| Physical verification | Cadence Assura DRC |
-| Simulation | Spectre (ADE L) |
-| Monte Carlo | ADE XL |
-| Waveform viewer | Virtuoso Visualization & Analysis XL |
-| Process design kit | gpdk180 (180 nm) |
-| Virtuoso version | 6.1.8-64b |
+**Simulation Details:** [Enter number of runs and actual observations]
 
 ---
 
 ## 📁 Repository Structure
 
-```
-8bit-ripple-carry-adder/
+```text
+8-Bit-Ripple-Carry-Adder/
 │
 ├── README.md
-├── docs/
-│   └── images/
-│       ├── schematic/
-│       │   ├── 01_inv_schematic.png
-│       │   ├── 02_nand_schematic.png
-│       │   ├── 03_or_schematic.png
-│       │   ├── 04_xor_schematic.png
-│       │   ├── 05_half_adder_schematic.png
-│       │   ├── 06_full_adder_schematic.png
-│       │   └── 07_8bit_ripple_schematic.png
-│       ├── layout/
-│       │   ├── 08_inv_layout.png
-│       │   ├── 09_nand_layout.png
-│       │   ├── 10_or_layout.png
-│       │   ├── 11_xor_layout.png
-│       │   ├── 12_half_adder_layout.png
-│       │   ├── 13_full_adder_layout.png
-│       │   └── 14_8bit_ripple_layout.png
-│       └── simulation/
-│           ├── 15_transient_response.png
-│           ├── 16_monte_carlo_P0_P7.png
-│           └── 17_monte_carlo_P8.png
 │
-└── ripple/                  # Virtuoso library (optional)
-    ├── inv/
-    ├── nand/
-    ├── or/
-    ├── xor/
-    ├── half_adder/
-    ├── full_adder/
-    └── 4bit_ripple/         # top cell containing the 8-bit adder
+├── Inverter/
+│   ├── Schematic/
+│   ├── Layout/
+│   └── Simulation/
+│
+├── NAND_Gate/
+│   ├── Schematic/
+│   ├── Layout/
+│   └── Simulation/
+│
+├── OR_Gate/
+│   ├── Schematic/
+│   ├── Layout/
+│   └── Simulation/
+│
+├── XOR_Gate/
+│   ├── Schematic/
+│   ├── Layout/
+│   └── Simulation/
+│
+├── Half_Adder/
+│   ├── Schematic/
+│   ├── Layout/
+│   └── Simulation/
+│
+├── Full_Adder/
+│   ├── Schematic/
+│   ├── Layout/
+│   └── Simulation/
+│
+├── 8_Bit_Ripple_Carry_Adder/
+│   ├── Schematic/
+│   ├── Layout/
+│   ├── DRC/
+│   └── Monte_Carlo/
+│
+└── Results/
+    ├── Waveforms/
+    ├── Layout_Screenshots/
+    └── Monte_Carlo_Plots/
 ```
 
----
+## 🎯 Key Learning Outcomes
 
-## ▶️ How to Reproduce
+- Understanding CMOS transistor-level circuit design.
+- Designing fundamental combinational logic gates.
+- Implementing Half Adder and Full Adder circuits.
+- Understanding carry generation and propagation.
+- Integrating arithmetic building blocks into an 8-bit RCA.
+- Developing physical layouts using Cadence Virtuoso.
+- Performing DRC verification.
+- Understanding process variation through Monte Carlo analysis.
 
-1. Open Virtuoso and create / import the library `ripple` attached to the **gpdk180** technology.
-2. Open the schematic of each cell, check and save it (`Check → Current Cellview`).
-3. Open the layout view and run **Assura → Run DRC**.
-4. For the top cell, open **ADE L**, select **Spectre**, add the input pulse sources, set the transient stop time to `100n`, and run.
-5. For variation analysis, open **ADE XL**, create a **Monte Carlo Sampling** run with `100` samples, and add `ymax(VT("/Pn"))` as the output expressions.
-6. Plot the results in **Visualization & Analysis XL**.
+## 🚀 Conclusion
 
----
+This project demonstrates a complete learning and implementation journey from fundamental CMOS logic gates to an 8-bit Ripple Carry Adder.
 
-## 🚀 Future Work
+Through schematic design, physical layout implementation, DRC verification, and Monte Carlo analysis, the project provides practical exposure to the full-custom digital VLSI design methodology.
 
-- [ ] LVS verification of all layouts
-- [ ] Parasitic extraction (PEX) and post-layout simulation
-- [ ] Propagation delay and power measurement
-- [ ] Carry-lookahead / carry-select adder for speed comparison
-- [ ] Transistor sizing optimisation for lower delay
+It strengthens the understanding of transistor-level CMOS design, arithmetic circuit architecture, physical implementation, and circuit-level verification.
 
 ---
 
-## 👤 Author
+## 👨‍💻 Author
 
-**[Your Name]**
-[Your Department / College]
-📧 [your-email@example.com] · 🔗 [LinkedIn](https://linkedin.com/in/your-profile) · 💻 [GitHub](https://github.com/your-username)
+**V. Abhinav**
+
+Electronics and Communication Engineering
+
+IIITDM Kurnool, India
 
 ---
 
-<div align="center">
+## 🏷️ Keywords
 
-⭐ *If you found this project useful, consider giving it a star!* ⭐
+`VLSI` `CMOS` `Cadence Virtuoso` `45nm` `Inverter` `NAND` `OR` `XOR` `Half Adder` `Full Adder` `Ripple Carry Adder` `8-bit RCA` `Layout Design` `DRC` `Monte Carlo Analysis`
 
-</div>
+---
+
+<p align="center">
+  <b>Designed with Cadence Virtuoso | CMOS Digital VLSI Design</b>
+</p>
