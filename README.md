@@ -383,37 +383,8 @@ The 8-bit RCA consists of:
 The carry output of each Full Adder is connected to the carry input of the next Full Adder.
 
 The general architecture is:
+![8-Bit RCA Schematic](Architcture.jpeg)
 
-```text
- A0, B0, Cin
-      |
-      v
-  +---------+
-  |  FA 0   | ----> S0
-  +---------+
-      |
-      | C1
-      v
-  +---------+
-  |  FA 1   | ----> S1
-  +---------+
-      |
-      | C2
-      v
-  +---------+
-  |  FA 2   | ----> S2
-  +---------+
-      |
-     ...
-      |
-      v
-  +---------+
-  |  FA 7   | ----> S7
-  +---------+
-      |
-      v
-    Cout
-```
 
 ## 9.3 Working Principle
 
