@@ -1,409 +1,279 @@
-# 8-Bit Ripple Carry Adder Design Using CMOS Technology
+# CMOS-Based 8-Bit Ripple Carry Adder Design and Analysis
 
-### A Complete Full-Custom Digital VLSI Design and Implementation Using Cadence Virtuoso
-
----
+![Technology](https://img.shields.io/badge/Design-CMOS-blue)
+![EDA Tool](https://img.shields.io/badge/EDA-Cadence%20Virtuoso-orange)
+![Circuit](https://img.shields.io/badge/Circuit-8--Bit%20RCA-green)
+![Analysis](https://img.shields.io/badge/Analysis-Monte%20Carlo-purple)
 
 ## 1. Project Overview
 
-This project presents the complete transistor-level design and physical implementation of an **8-bit Ripple Carry Adder (RCA)** using CMOS technology.
+This project focuses on the transistor-level design, schematic implementation, physical layout, and performance verification of fundamental CMOS logic circuits and an 8-bit Ripple Carry Adder (RCA) using Cadence Virtuoso.
 
-The implementation follows a hierarchical design methodology, beginning with fundamental CMOS logic gates and progressing towards arithmetic building blocks and an 8-bit binary adder.
+The implementation begins with basic CMOS logic gates, followed by arithmetic building blocks such as Half Adders and Full Adders. These individual circuits are then used to understand and construct an 8-bit Ripple Carry Adder.
 
-The project includes the design and implementation of:
+The final 8-bit RCA is evaluated through schematic simulation, physical layout implementation, Design Rule Check (DRC), and Monte Carlo analysis. Monte Carlo simulations are performed to observe the effect of device parameter variations on the eight output nodes, P1 to P8.
 
-1. CMOS Inverter
-2. CMOS NAND Gate
-3. CMOS OR Gate
-4. CMOS XOR Gate
-5. Half Adder (HA)
-6. Full Adder (FA)
-7. 8-Bit Ripple Carry Adder (RCA)
-
-Each circuit is designed at the transistor level using Cadence Virtuoso. The corresponding physical layouts are developed and verified through Design Rule Check (DRC).
-
-Monte Carlo analysis is also performed to investigate the influence of statistical device parameter variations on circuit performance.
-
-The primary objective is to understand the complete full-custom digital VLSI design flow, starting from individual MOS transistors and progressing towards a multi-bit arithmetic circuit.
+The project demonstrates the complete custom digital IC design flow, starting from transistor-level circuit design and progressing towards layout-level verification.
 
 ---
 
-## 2. Project Objectives
+## 2. Table of Contents
 
-The major objectives of this project are:
-
-- To understand the fundamentals of CMOS digital circuit design.
-- To implement basic combinational logic gates using PMOS and NMOS transistors.
-- To study transistor-level implementations of arithmetic circuits.
-- To design Half Adder and Full Adder circuits.
-- To integrate multiple Full Adder stages into an 8-bit Ripple Carry Adder.
-- To perform schematic-level circuit simulations.
-- To develop physical layouts for the designed circuits.
-- To verify layout compliance using Design Rule Check.
-- To study the impact of process variations through Monte Carlo analysis.
-- To gain practical experience with the full-custom VLSI design methodology.
+1. [Project Overview](#1-project-overview)
+2. [Project Highlights](#3-project-highlights)
+3. [Key Specifications](#4-key-specifications)
+4. [Tools and Technologies](#5-tools-and-technologies)
+5. [CMOS Basic Logic Gates](#6-cmos-basic-logic-gates)
+   - CMOS Inverter
+   - CMOS NAND Gate
+   - CMOS OR Gate
+   - CMOS XOR Gate
+6. [Half Adder Design](#7-half-adder-design)
+7. [Full Adder Design](#8-full-adder-design)
+8. [8-Bit Ripple Carry Adder](#9-8-bit-ripple-carry-adder)
+   - Circuit Architecture
+   - Working Principle
+   - Boolean Equations
+   - Schematic Design
+   - Simulation and Waveform Analysis
+   - Layout Design
+   - DRC Verification
+   - Monte Carlo Analysis
+9. [Conclusion](#10-conclusion)
+10. [Repository Structure](#11-repository-structure)
+11. [Author](#12-author)
 
 ---
 
-## 3. Tools and Technology
+## 3. Project Highlights
 
-| Parameter | Specification |
+- Transistor-level implementation of fundamental CMOS logic gates.
+- Schematic and physical layout design of individual logic circuits.
+- Design of Half Adder and Full Adder arithmetic circuits.
+- Construction of an 8-bit Ripple Carry Adder using cascaded Full Adder stages.
+- Functional verification through Cadence Virtuoso simulation.
+- Simulation of the RCA using the input condition A = 1, B = 1, and Cin = 1.
+- Physical layout implementation of the final 8-bit RCA.
+- Design Rule Check (DRC) for layout verification.
+- Monte Carlo analysis of all eight output nodes, P1 to P8.
+- Evaluation of circuit behavior under device parameter variations.
+
+---
+
+## 4. Key Specifications
+
+| Parameter | Description |
 |---|---|
+| Design Type | Digital CMOS |
+| Design Level | Transistor level |
+| Main Circuit | 8-Bit Ripple Carry Adder |
+| Basic Gates | Inverter, NAND, OR, XOR |
+| Arithmetic Circuits | Half Adder, Full Adder |
+| Number of RCA Stages | 8 Full Adders |
 | EDA Tool | Cadence Virtuoso |
-| Technology | 45 nm CMOS (GPdk45, if applicable) |
-| Design Methodology | Full-Custom Design |
-| Circuit Implementation | Transistor Level |
-| Circuit Category | Combinational Logic |
-| Schematic Verification | Circuit Simulation |
-| Physical Design | Custom Layout |
-| Physical Verification | Design Rule Check (DRC) |
-| Statistical Verification | Monte Carlo Analysis |
-
-**Note:** The actual supply voltage, transistor dimensions, process corner and model parameters used in the simulations should be documented according to the implemented designs.
+| Simulation Tool | Cadence Spectre |
+| Physical Design | CMOS Layout |
+| Layout Verification | DRC |
+| Statistical Analysis | Monte Carlo |
+| Monte Carlo Outputs | P1 to P8 |
+| Simulation Input Condition | A = 1, B = 1, Cin = 1 |
+| Technology Node | [Specify your PDK technology node] |
+| Supply Voltage | [Specify your simulation supply voltage] |
 
 ---
 
-# 4. CMOS FUNDAMENTALS
+## 5. Tools and Technologies
 
-## 4.1 Introduction to CMOS Technology
+### Cadence Virtuoso
 
-CMOS stands for Complementary Metal-Oxide-Semiconductor. It is a widely used technology for implementing digital integrated circuits.
+Cadence Virtuoso is used for transistor-level schematic design, circuit implementation, physical layout creation, and simulation.
 
-CMOS circuits use two complementary types of MOS transistors:
+### Cadence Spectre
 
-- PMOS (P-channel MOSFET)
-- NMOS (N-channel MOSFET)
+Spectre is used to simulate the designed circuits and observe their output waveforms.
 
-The PMOS transistor is generally used as a pull-up device, whereas the NMOS transistor is used as a pull-down device.
+### Design Rule Check (DRC)
 
-### PMOS Operation
+DRC is used to verify whether the physical layout follows the manufacturing rules defined by the selected technology.
 
-- Turns ON when the gate voltage is sufficiently LOW relative to its source.
-- Provides a conducting path between the output and supply voltage.
-- Forms the pull-up network in static CMOS logic.
+### Monte Carlo Analysis
 
-### NMOS Operation
-
-- Turns ON when the gate voltage is sufficiently HIGH relative to its source.
-- Provides a conducting path between the output and ground.
-- Forms the pull-down network in static CMOS logic.
-
-### Advantages of CMOS Technology
-
-- Low static power consumption.
-- High noise immunity.
-- High integration density.
-- Good scalability.
-- Suitable for low-power and high-performance digital circuits.
+Monte Carlo analysis is used to evaluate the effect of device parameter variations on the circuit outputs over multiple simulation runs.
 
 ---
 
-# 5. CMOS INVERTER DESIGN
+# 6. CMOS Basic Logic Gates
 
-## 5.1 Introduction
+The initial stage of the project involves designing fundamental CMOS logic gates. These gates form the building blocks for the arithmetic circuits developed later.
 
-A CMOS inverter is the fundamental building block of digital integrated circuits. It performs the logical NOT operation and produces an output complementary to the input.
+## 6.1 CMOS Inverter
 
-The inverter consists of one PMOS transistor and one NMOS transistor connected in a complementary configuration.
+### Circuit Description
 
-## 5.2 Boolean Expression
+A CMOS inverter is the fundamental building block of digital CMOS circuits. It consists of one PMOS transistor and one NMOS transistor connected in a complementary configuration.
+
+The PMOS transistor acts as the pull-up network, while the NMOS transistor acts as the pull-down network.
+
+### Working Principle
+
+- When input A = 0, the PMOS transistor turns ON and the NMOS transistor turns OFF. The output becomes HIGH.
+- When input A = 1, the PMOS transistor turns OFF and the NMOS transistor turns ON. The output becomes LOW.
+
+### Boolean Expression
 
 \[
 Y=\overline{A}
 \]
 
-Where:
+### Schematic Design
 
-- A = Input
-- Y = Output
+The schematic is implemented by connecting the PMOS transistor between VDD and the output, and the NMOS transistor between the output and ground. Their gates are connected together to form the input.
 
-## 5.3 Truth Table
+**CMOS Inverter Schematic**
 
-| Input A | Output Y |
-|:---:|:---:|
-| 0 | 1 |
-| 1 | 0 |
+![CMOS Inverter Schematic](CMOS_Basic_Gates/Inverter/Schematic.png)
 
-## 5.4 Circuit Working Principle
+### Layout Design
 
-The inverter operates according to the input voltage applied to the gates of the PMOS and NMOS transistors.
+The physical layout is developed using the corresponding PMOS and NMOS transistor structures. The input, output, supply, and ground connections are routed according to the schematic.
 
-**Case 1: Input LOW (A = 0)**
+**CMOS Inverter Layout**
 
-- PMOS transistor turns ON.
-- NMOS transistor turns OFF.
-- Output is connected to VDD.
-- Output voltage becomes HIGH.
-
-**Case 2: Input HIGH (A = 1)**
-
-- PMOS transistor turns OFF.
-- NMOS transistor turns ON.
-- Output is connected to ground.
-- Output voltage becomes LOW.
-
-Thus, the output is always the complement of the input.
-
-## 5.5 Schematic Design
-
-The schematic is implemented using:
-- One PMOS transistor.
-- One NMOS transistor.
-- Common gate connection as input.
-- Common drain connection as output.
-- PMOS source connected to VDD.
-- NMOS source connected to GND.
-
-## 5.6 Simulation and Verification
-
-Transient analysis is performed by applying a pulse input to the inverter.
-
-The output waveform is verified to ensure that it is complementary to the input waveform.
-
-The simulation can also be used to investigate:
-- Rise time.
-- Fall time.
-- Propagation delay.
-- Output voltage levels.
-- Switching characteristics.
-
-## 5.7 Layout Design
-
-The physical layout is developed using the PMOS and NMOS devices with appropriate diffusion, poly, contact and metal connections.
-
-The layout includes:
-- PMOS placement in the upper region.
-- NMOS placement in the lower region.
-- Common gate connection.
-- Output interconnection.
-- VDD and GND routing.
-
-The layout is designed while satisfying the design rules of the selected technology.
+![CMOS Inverter Layout](CMOS_Basic_Gates/Inverter/Layout.png)
 
 ---
 
-# 6. CMOS NAND GATE DESIGN
+## 6.2 CMOS NAND Gate
 
-## 6.1 Introduction
+### Circuit Description
 
-The NAND gate is a fundamental universal logic gate. It performs the complement of the AND operation.
+A CMOS NAND gate is a universal logic gate that produces a LOW output only when both inputs are HIGH.
 
-A 2-input NAND gate produces a LOW output only when both inputs are HIGH.
+It consists of:
+- Two PMOS transistors connected in parallel in the pull-up network.
+- Two NMOS transistors connected in series in the pull-down network.
 
-## 6.2 Boolean Expression
+### Working Principle
+
+When both inputs are HIGH, the NMOS series network conducts and the output becomes LOW.
+
+For all other input combinations, at least one PMOS transistor conducts, producing a HIGH output.
+
+### Boolean Expression
 
 \[
 Y=\overline{A\cdot B}
 \]
 
-## 6.3 Truth Table
+### Schematic Design
 
-| A | B | Y |
-|:---:|:---:|:---:|
-| 0 | 0 | 1 |
-| 0 | 1 | 1 |
-| 1 | 0 | 1 |
-| 1 | 1 | 0 |
+The transistor-level schematic is designed using a parallel PMOS network and a series NMOS network.
 
-## 6.4 CMOS Circuit Architecture
+**CMOS NAND Schematic**
 
-The conventional static CMOS NAND gate consists of four transistors:
+![CMOS NAND Schematic](CMOS_Basic_Gates/NAND/Schematic.png)
 
-**Pull-Up Network:**
-- Two PMOS transistors connected in parallel.
+### Layout Design
 
-**Pull-Down Network:**
-- Two NMOS transistors connected in series.
+The physical layout is implemented by arranging the PMOS and NMOS transistors according to their schematic connections. Proper routing is provided for both inputs, the output, VDD, and ground.
 
-## 6.5 Working Principle
+**CMOS NAND Layout**
 
-**Case 1: A = 0, B = 0**
-
-Both PMOS transistors turn ON, connecting the output to VDD. The output becomes HIGH.
-
-**Case 2: A = 0, B = 1**
-
-The PMOS controlled by A turns ON, while the series NMOS path is interrupted. The output remains HIGH.
-
-**Case 3: A = 1, B = 0**
-
-The PMOS controlled by B turns ON, while the series NMOS path is interrupted. The output remains HIGH.
-
-**Case 4: A = 1, B = 1**
-
-Both NMOS transistors turn ON, creating a conducting path to ground. Both PMOS transistors turn OFF. The output becomes LOW.
-
-## 6.6 Schematic Design
-
-The circuit is implemented using:
-- Two PMOS transistors in parallel.
-- Two NMOS transistors in series.
-- Two independent input terminals.
-- One output terminal.
-
-## 6.7 Simulation and Verification
-
-Transient simulation is performed by applying all possible input combinations.
-
-The simulated output is compared with the NAND truth table to verify the correct logical operation.
-
-## 6.8 Layout Design
-
-The NAND layout includes the parallel PMOS network and series NMOS network.
-
-The layout is developed with appropriate transistor placement, diffusion sharing where applicable, metal interconnections, contacts and supply connections.
+![CMOS NAND Layout](CMOS_Basic_Gates/NAND/Layout.png)
 
 ---
 
-# 7. CMOS OR GATE DESIGN
+## 6.3 CMOS OR Gate
 
-## 7.1 Introduction
+### Circuit Description
 
-An OR gate is a fundamental combinational logic gate that produces a HIGH output whenever at least one of its inputs is HIGH.
+An OR gate is a combinational logic circuit that produces a HIGH output when at least one input is HIGH.
 
-A 2-input OR gate is commonly implemented in static CMOS using a NOR gate followed by an inverter.
+The OR function can be implemented using a NOR gate followed by a CMOS inverter.
 
-## 7.2 Boolean Expression
+### Working Principle
+
+- When both inputs are LOW, the output is LOW.
+- When either one or both inputs are HIGH, the output is HIGH.
+
+### Boolean Expression
 
 \[
 Y=A+B
 \]
 
-## 7.3 Truth Table
-
-| A | B | Y |
-|:---:|:---:|:---:|
-| 0 | 0 | 0 |
-| 0 | 1 | 1 |
-| 1 | 0 | 1 |
-| 1 | 1 | 1 |
-
-## 7.4 CMOS Circuit Architecture
-
-A conventional static CMOS OR gate can be implemented using:
-
-**NOR Stage:**
-- Two PMOS transistors connected in series.
-- Two NMOS transistors connected in parallel.
-
-**Inverter Stage:**
-- One PMOS transistor.
-- One NMOS transistor.
-
-The output of the NOR stage is connected to the inverter input.
-
-## 7.5 Working Principle
-
-The NOR stage first produces the complement of the OR operation.
+For a NOR-based implementation:
 
 \[
-X=\overline{A+B}
+Y=\overline{\overline{A+B}}
 \]
 
-The inverter then complements this output:
+### Schematic Design
 
-\[
-Y=\overline{X}=A+B
-\]
+The circuit is implemented using the required NOR and inverter stages to obtain the OR logic function.
 
-Therefore, the final output implements the OR operation.
+**CMOS OR Schematic**
 
-## 7.6 Schematic Design
+![CMOS OR Schematic](CMOS_Basic_Gates/OR/Schematic.png)
 
-The circuit is implemented by cascading a NOR gate and a CMOS inverter.
+### Layout Design
 
-The two inputs are connected to the NOR stage, and the inverter produces the final OR output.
+The physical layout follows the implemented NOR-inverter structure, with appropriate transistor placement and interconnections.
 
-## 7.7 Simulation and Verification
+**CMOS OR Layout**
 
-Transient analysis is performed by applying different input combinations.
-
-The output is verified against the OR truth table.
-
-## 7.8 Layout Design
-
-The physical layout includes the NOR pull-up and pull-down networks followed by the inverter stage.
-
-The transistor arrangement and metal routing are optimized for proper connectivity and design-rule compliance.
+![CMOS OR Layout](CMOS_Basic_Gates/OR/Layout.png)
 
 ---
 
-# 8. CMOS XOR GATE DESIGN
+## 6.4 CMOS XOR Gate
 
-## 8.1 Introduction
+### Circuit Description
 
-The Exclusive-OR (XOR) gate is an important logic gate used in arithmetic circuits, parity generation, error detection and digital signal processing.
+An XOR gate produces a HIGH output when its two inputs are different. It is an important component in arithmetic circuits because it is used for Sum generation in Half Adders and Full Adders.
 
-The XOR gate produces a HIGH output when its two inputs are different.
+### Working Principle
 
-## 8.2 Boolean Expression
+- When A and B are equal, the output is LOW.
+- When A and B are different, the output is HIGH.
+
+### Boolean Expression
 
 \[
 Y=A\oplus B
 \]
 
-The XOR operation can also be expressed as:
-
 \[
 Y=\overline{A}B+A\overline{B}
 \]
 
-## 8.3 Truth Table
+### Schematic Design
 
-| A | B | Y |
-|:---:|:---:|:---:|
-| 0 | 0 | 0 |
-| 0 | 1 | 1 |
-| 1 | 0 | 1 |
-| 1 | 1 | 0 |
+The XOR gate is implemented using a transistor-level CMOS network to realize the exclusive-OR function.
 
-## 8.4 Working Principle
+**CMOS XOR Schematic**
 
-The XOR gate produces a HIGH output when one input is HIGH and the other input is LOW.
+![CMOS XOR Schematic](CMOS_Basic_Gates/XOR/Schematic.png)
 
-When both inputs have the same logical value, the output becomes LOW.
+### Layout Design
 
-## 8.5 Schematic Design
+The physical layout is created from the XOR transistor-level schematic. The PMOS and NMOS networks are arranged and interconnected to obtain the required XOR functionality.
 
-The XOR circuit is implemented using the selected CMOS transistor-level topology.
+**CMOS XOR Layout**
 
-The design includes complementary input signals and the required pull-up and pull-down transistor networks.
-
-The transistor sizing and connections are selected to achieve the required logic functionality.
-
-## 8.6 Simulation and Verification
-
-Transient analysis is performed using different combinations of input pulses.
-
-The output waveform is checked against the XOR truth table.
-
-The simulation verifies:
-- Correct XOR functionality.
-- Logic HIGH and LOW levels.
-- Switching response.
-- Output transition characteristics.
-
-## 8.7 Layout Design
-
-The physical layout is created according to the selected XOR topology.
-
-The layout includes transistor placement, diffusion connections, polysilicon gates, contacts and metal interconnections.
+![CMOS XOR Layout](CMOS_Basic_Gates/XOR/Layout.png)
 
 ---
 
-# 9. HALF ADDER DESIGN
+# 7. Half Adder Design
 
-## 9.1 Introduction
+## 7.1 Circuit Description
 
-A Half Adder is a combinational arithmetic circuit used to perform the addition of two single-bit binary inputs.
+A Half Adder is a combinational arithmetic circuit that adds two single-bit binary inputs and generates two outputs: Sum and Carry.
 
-It produces two outputs:
-- Sum (S)
-- Carry (C)
+It consists of XOR logic for Sum generation and AND logic for Carry generation.
 
-The Half Adder is an important building block for constructing Full Adders and larger binary arithmetic circuits.
-
-## 9.2 Boolean Expressions
+### Boolean Expressions
 
 **Sum:**
 
@@ -417,85 +287,42 @@ S=A\oplus B
 C=A\cdot B
 \]
 
-## 9.3 Truth Table
+### Schematic Design
 
-| A | B | Sum | Carry |
-|:---:|:---:|:---:|:---:|
-| 0 | 0 | 0 | 0 |
-| 0 | 1 | 1 | 0 |
-| 1 | 0 | 1 | 0 |
-| 1 | 1 | 0 | 1 |
+The Half Adder schematic is implemented by combining XOR and AND logic functions. The XOR stage generates the Sum output, while the AND stage generates the Carry output.
 
-## 9.4 Circuit Architecture
+**Half Adder Schematic**
 
-A conventional Half Adder consists of:
+![Half Adder Schematic](Half_Adder/Schematic.png)
 
-- One XOR gate for Sum generation.
-- One AND gate for Carry generation.
+### Layout Design
 
-The same two input signals are supplied to both logic blocks.
+The physical layout integrates the logic networks required for Sum and Carry generation. The layout follows the transistor-level schematic and includes proper input, output, power, and ground connections.
 
-## 9.5 Working Principle
+**Half Adder Layout**
 
-**Case 1: A = 0, B = 0**
-
-Sum = 0 and Carry = 0.
-
-**Case 2: A = 0, B = 1**
-
-Sum = 1 and Carry = 0.
-
-**Case 3: A = 1, B = 0**
-
-Sum = 1 and Carry = 0.
-
-**Case 4: A = 1, B = 1**
-
-Sum = 0 and Carry = 1.
-
-## 9.6 Schematic Design
-
-The Half Adder schematic is implemented using the required transistor-level XOR and AND logic.
-
-The input terminals A and B are shared between the Sum and Carry generation circuits.
-
-## 9.7 Simulation and Verification
-
-Transient simulation is performed to verify the Sum and Carry outputs for all four input combinations.
-
-The simulation results are compared with the Half Adder truth table.
-
-## 9.8 Layout Design
-
-The physical layout is developed by arranging the Sum and Carry generation circuits and establishing the required interconnections.
-
-Special attention is given to:
-- Input signal routing.
-- Output separation.
-- Supply connections.
-- Metal and diffusion routing.
-- Layout design-rule compliance.
+![Half Adder Layout](Half_Adder/Layout.png)
 
 ---
 
-# 10. FULL ADDER DESIGN
+# 8. Full Adder Design
 
-## 10.1 Introduction
+## 8.1 Circuit Description
 
-A Full Adder is a combinational arithmetic circuit that performs the addition of three binary inputs.
+A Full Adder is a combinational arithmetic circuit that adds three single-bit inputs:
 
-The three inputs are:
-- A
-- B
-- Carry Input (Cin)
+- A: First input bit
+- B: Second input bit
+- Cin: Carry input from the previous stage
 
-The outputs are:
-- Sum (S)
-- Carry Output (Cout)
+It produces two outputs:
 
-Unlike a Half Adder, a Full Adder accepts a carry input from a previous arithmetic stage.
+- Sum: Result of binary addition
+- Cout: Carry output to the next stage
 
-## 10.2 Boolean Expressions
+A Full Adder is the fundamental building block of the 8-bit Ripple Carry Adder.
+
+### Boolean Expressions
 
 **Sum:**
 
@@ -503,143 +330,121 @@ Unlike a Half Adder, a Full Adder accepts a carry input from a previous arithmet
 S=A\oplus B\oplus C_{in}
 \]
 
-**Carry Output:**
+**Carry:**
 
 \[
 C_{out}=AB+AC_{in}+BC_{in}
 \]
 
-An equivalent expression is:
+An equivalent carry expression is:
 
 \[
-C_{out}=AB+C_{in}(A\oplus B)
+C_{out}=AB+(A\oplus B)C_{in}
 \]
 
-## 10.3 Truth Table
+### Schematic Design
 
-| A | B | Cin | Sum | Cout |
-|:---:|:---:|:---:|:---:|:---:|
-| 0 | 0 | 0 | 0 | 0 |
-| 0 | 0 | 1 | 1 | 0 |
-| 0 | 1 | 0 | 1 | 0 |
-| 0 | 1 | 1 | 0 | 1 |
-| 1 | 0 | 0 | 1 | 0 |
-| 1 | 0 | 1 | 0 | 1 |
-| 1 | 1 | 0 | 0 | 1 |
-| 1 | 1 | 1 | 1 | 1 |
+The Full Adder is implemented using XOR-based Sum generation and carry-generation logic. The circuit combines the three input signals to produce the required Sum and Carry outputs.
 
-## 10.4 Circuit Architecture
+**Full Adder Schematic**
 
-A conventional Full Adder can be implemented using:
+![Full Adder Schematic](Full_Adder/Schematic.png)
 
-- Two XOR gates.
-- Two AND gates.
-- One OR gate.
+### Layout Design
 
-The first XOR generates the intermediate term:
+The physical layout is developed from the Full Adder transistor-level schematic. The required logic networks are placed and interconnected to obtain the Sum and Carry functionality.
 
-\[
-P=A\oplus B
-\]
+**Full Adder Layout**
 
-The second XOR generates the Sum:
-
-\[
-S=P\oplus C_{in}
-\]
-
-The Carry output is generated using:
-
-\[
-C_{out}=AB+PC_{in}
-\]
-
-## 10.5 Working Principle
-
-The Full Adder calculates the binary sum of A, B and Cin.
-
-When the number of HIGH inputs is odd, the Sum output is HIGH.
-
-When at least two inputs are HIGH, the Carry output is HIGH.
-
-The circuit therefore supports both binary addition and carry propagation.
-
-## 10.6 Schematic Design
-
-The Full Adder schematic is implemented using the selected CMOS transistor-level architecture.
-
-The circuit includes the required XOR and carry-generation logic, with appropriate input and output connections.
-
-## 10.7 Simulation and Verification
-
-Transient analysis is performed using input pulse combinations to cover all eight possible input conditions.
-
-Both Sum and Carry outputs are verified against the Full Adder truth table.
-
-## 10.8 Layout Design
-
-The Full Adder layout is developed using the transistor-level implementation.
-
-The physical design includes:
-- Input signal routing.
-- Sum output routing.
-- Carry output routing.
-- Transistor placement.
-- Power and ground connections.
-- Metal interconnections.
+![Full Adder Layout](Full_Adder/Layout.png)
 
 ---
 
-# 11. 8-BIT RIPPLE CARRY ADDER DESIGN
+# 9. 8-Bit Ripple Carry Adder
 
-## 11.1 Introduction
+## 9.1 Introduction
 
-An 8-bit Ripple Carry Adder is a combinational arithmetic circuit used to perform binary addition of two 8-bit numbers.
+An 8-bit Ripple Carry Adder is a combinational arithmetic circuit used to add two 8-bit binary numbers.
 
-It is constructed by cascading eight Full Adder stages.
+It is constructed by cascading eight Full Adder stages. Each Full Adder processes one bit position, and the carry generated by one stage is passed to the next stage.
 
-Each Full Adder receives two corresponding input bits and the carry generated by the previous stage.
+The carry propagates from the Least Significant Bit (LSB) towards the Most Significant Bit (MSB). This sequential carry propagation gives the circuit its name: Ripple Carry Adder.
 
-The carry propagates sequentially from the least significant bit (LSB) to the most significant bit (MSB).
+## 9.2 Circuit Architecture
 
-## 11.2 Architecture
+The 8-bit RCA consists of:
 
-The 8-bit Ripple Carry Adder consists of:
-
-- Two 8-bit input operands A and B.
 - Eight Full Adder stages.
-- One initial carry input (Cin).
-- Eight Sum outputs.
-- One final Carry output (Cout).
+- Two 8-bit input operands.
+- One initial carry input.
+- Eight Sum output bits.
+- One final carry output.
 
-The carry generated by one stage becomes the carry input of the next stage.
+The carry output of each Full Adder is connected to the carry input of the next Full Adder.
 
-## 11.3 Block Diagram
+The general architecture is:
 
 ```text
- A0 B0      A1 B1      A2 B2                    A7 B7
-  | |        | |        | |                      | |
-  v v        v v        v v                      v v
-+------+   +------+   +------+                +------+
-| FA 0 |-->| FA 1 |-->| FA 2 |---- ... ------>| FA 7 |
-+------+   +------+   +------+                +------+
-   |          |          |                        |
-   S0         S1         S2                       S7
-
-Cin ---> FA0
-
-Carry chain:
-C1 ---> C2 ---> C3 ---> C4 ---> C5 ---> C6 ---> C7 ---> Cout
+ A0, B0, Cin
+      |
+      v
+  +---------+
+  |  FA 0   | ----> S0
+  +---------+
+      |
+      | C1
+      v
+  +---------+
+  |  FA 1   | ----> S1
+  +---------+
+      |
+      | C2
+      v
+  +---------+
+  |  FA 2   | ----> S2
+  +---------+
+      |
+     ...
+      |
+      v
+  +---------+
+  |  FA 7   | ----> S7
+  +---------+
+      |
+      v
+    Cout
 ```
 
-## 11.4 Boolean Expressions
+## 9.3 Working Principle
 
-For each Full Adder stage:
+Each Full Adder receives three signals:
+
+1. The corresponding bit from input A.
+2. The corresponding bit from input B.
+3. The carry generated by the previous stage.
+
+The first Full Adder receives the external carry input \(C_0\). It generates the first Sum bit and the carry \(C_1\).
+
+The second Full Adder uses \(C_1\) as its carry input and generates \(S_1\) and \(C_2\).
+
+This process continues through all eight stages until the final carry output \(C_8\) is generated.
+
+The main characteristic of the RCA is that the next stage depends on the carry generated by the previous stage. Therefore, the overall addition delay is influenced by carry propagation through the Full Adder stages.
+
+## 9.4 Boolean Equations
+
+For each bit position \(i\), the propagate and generate terms are:
 
 **Propagate:**
 
 \[
 P_i=A_i\oplus B_i
+\]
+
+**Generate:**
+
+\[
+G_i=A_iB_i
 \]
 
 **Sum:**
@@ -651,513 +456,252 @@ S_i=P_i\oplus C_i
 **Carry:**
 
 \[
-C_{i+1}=A_iB_i+P_iC_i
+C_{i+1}=G_i+P_iC_i
 \]
 
-Where:
+These equations are applied to all eight Full Adder stages.
 
-- Ai and Bi represent the input bits.
-- Ci represents the incoming carry.
-- Si represents the Sum output.
-- Ci+1 represents the outgoing carry.
-
-For the complete 8-bit addition:
+The complete arithmetic operation is:
 
 \[
-\{C_{out},S_7,\ldots,S_0\}=A+B+C_{in}
+A+B+C_0=256C_8+S
 \]
 
-## 11.5 Working Principle
+where A and B are unsigned 8-bit inputs, S is the 8-bit Sum, and \(C_8\) is the final carry.
 
-The operation starts from the least significant bit.
+## 9.5 Schematic Design
 
-**Stage 0:**
+The 8-bit RCA schematic is implemented by connecting eight Full Adder stages in cascade.
 
-The first Full Adder adds A0, B0 and Cin to generate S0 and C1.
+Each stage receives its corresponding A and B input bits, while the carry output of the previous stage is connected to the next stage's carry input.
 
-**Stage 1:**
+The first stage receives the external carry input, and the final stage generates the carry output.
 
-The second Full Adder adds A1, B1 and C1 to generate S1 and C2.
+The schematic represents the complete transistor-level implementation of the 8-bit binary addition circuit.
 
-**Intermediate Stages:**
+**8-Bit Ripple Carry Adder Schematic**
 
-The same operation continues through the successive Full Adder stages.
+![8-Bit RCA Schematic](8_Bit_Ripple_Carry_Adder/Schematic.png)
 
-**Final Stage:**
+## 9.6 Simulation and Functional Verification
 
-The eighth Full Adder processes A7, B7 and C7 to generate S7 and the final Cout.
+The final RCA schematic is simulated using Cadence Virtuoso and Spectre to verify the addition functionality.
 
-The final result is a 9-bit output containing the eight Sum bits and the final Carry bit.
+### Applied Input Condition
 
-## 11.6 Schematic Design
-
-The 8-bit Ripple Carry Adder schematic is constructed by cascading eight Full Adder instances.
-
-The design involves:
-- Connecting the A and B input buses.
-- Connecting the initial carry input.
-- Cascading the carry outputs and inputs.
-- Collecting all eight Sum outputs.
-- Connecting the final carry output.
-
-The schematic is verified to ensure correct connectivity between all eight stages.
-
-## 11.7 Simulation and Functional Verification
-
-Transient simulation is performed using suitable input combinations.
-
-The expected binary addition results are compared with the simulated Sum and Carry outputs.
-
-Example verification cases:
-
-| A | B | Cin | Expected Output |
-|---|---|:---:|---|
-| 00000000 | 00000000 | 0 | 0 00000000 |
-| 00000001 | 00000001 | 0 | 0 00000010 |
-| 00000101 | 00000011 | 0 | 0 00001000 |
-| 00001111 | 00000001 | 0 | 0 00010000 |
-| 11111111 | 00000001 | 0 | 1 00000000 |
-| 10101010 | 01010101 | 0 | 0 11111111 |
-
-## 11.8 Physical Layout Design
-
-The 8-bit RCA physical layout is developed using the Full Adder building blocks.
-
-The layout implementation involves:
-- Placement of eight Full Adder stages.
-- Routing of A and B input signals.
-- Routing of intermediate carry signals.
-- Routing of Sum outputs.
-- Routing of final Carry output.
-- VDD and GND distribution.
-- Metal interconnections between successive stages.
-
-The physical layout is organized to establish proper connectivity and maintain compliance with the selected technology design rules.
-
----
-
-# 12. PHYSICAL LAYOUT DESIGN METHODOLOGY
-
-## 12.1 Introduction
-
-Physical layout design is the process of translating a circuit schematic into a geometric representation that can be used for integrated circuit fabrication.
-
-The layout represents the physical arrangement of MOS transistors and the electrical interconnections between them.
-
-## 12.2 Main Layout Layers
-
-The layout uses different physical layers according to the selected CMOS technology.
-
-Common layers include:
-
-- N-well.
-- P-well or substrate.
-- Active/Diffusion.
-- Polysilicon.
-- Contact.
-- Metal interconnect layers.
-- Via layers.
-- Implant layers.
-
-The actual available layers and design rules depend on the selected PDK.
-
-## 12.3 Layout Design Procedure
-
-The general layout development procedure consists of:
-
-1. Creating the layout view in Cadence Virtuoso.
-2. Placing PMOS and NMOS devices.
-3. Establishing the required diffusion connections.
-4. Drawing polysilicon gate connections.
-5. Adding contacts and vias.
-6. Routing signal interconnections.
-7. Connecting VDD and GND.
-8. Checking geometrical spacing and connectivity.
-9. Running physical verification.
-
-## 12.4 Layout Considerations
-
-Important factors considered during physical implementation include:
-
-- Transistor placement.
-- Device sizing.
-- Routing complexity.
-- Metal width and spacing.
-- Contact and via placement.
-- Power distribution.
-- Signal connectivity.
-- Layout area.
-
-The physical layout must preserve the intended electrical functionality of the original schematic.
-
----
-
-# 13. DESIGN RULE CHECK (DRC)
-
-## 13.1 Introduction
-
-Design Rule Check is a physical verification process used to determine whether a layout satisfies the geometrical and manufacturing constraints defined by the selected technology.
-
-DRC checks ensure that the physical layout follows the fabrication requirements.
-
-## 13.2 Purpose of DRC
-
-The main purpose of DRC is to identify potential manufacturing issues caused by incorrect layout dimensions or spacing.
-
-## 13.3 Common DRC Checks
-
-DRC may include verification of:
-
-- Minimum metal width.
-- Minimum metal spacing.
-- Minimum diffusion width.
-- Diffusion-to-diffusion spacing.
-- Poly-to-poly spacing.
-- Contact enclosure.
-- Via enclosure.
-- Well spacing.
-- Implant spacing.
-- Minimum area requirements.
-
-## 13.4 DRC Verification Procedure
-
-1. Complete the physical layout.
-2. Save the layout in Cadence Virtuoso.
-3. Open the appropriate DRC verification environment.
-4. Select the correct technology rule deck.
-5. Configure the required verification settings.
-6. Execute the DRC run.
-7. Inspect the violation report.
-8. Correct any reported violations.
-9. Repeat verification until the intended DRC criteria are satisfied.
-
-## 13.5 DRC Results
-
-The final DRC result should be documented using the actual verification report.
-
-**Final DRC Status:** [Enter actual result]
-
-**Number of DRC Violations:** [Enter actual count]
-
-**Verification Tool:** Cadence Virtuoso DRC environment
-
-**Technology Rule Deck:** [Enter actual rule deck]
-
-A clean DRC result indicates that the layout satisfies the checked geometrical design rules. It does not, by itself, prove electrical equivalence or complete fabrication readiness.
-
----
-
-# 14. MONTE CARLO ANALYSIS
-
-## 14.1 Introduction
-
-Monte Carlo analysis is a statistical simulation technique used to investigate the effect of random variations in circuit parameters on the electrical performance of an integrated circuit.
-
-In CMOS technology, transistor characteristics can vary because of manufacturing process variations.
-
-These variations may affect:
-- Threshold voltage.
-- Effective channel dimensions.
-- Mobility.
-- Drain current.
-- Switching characteristics.
-- Propagation delay.
-- Output voltage.
-
-Monte Carlo simulation helps evaluate how these variations influence the performance and robustness of a circuit.
-
-## 14.2 Why Monte Carlo Analysis Is Important
-
-A circuit may perform correctly under nominal simulation conditions but exhibit different behavior when device parameters vary.
-
-Monte Carlo analysis helps estimate the distribution of circuit responses across multiple statistical simulation runs.
-
-It is useful for studying:
-- Circuit sensitivity to process variations.
-- Statistical output variations.
-- Performance consistency.
-- Design robustness.
-- Potential yield-related concerns.
-
-## 14.3 Working Principle
-
-Monte Carlo analysis uses statistical distributions to generate different sets of device parameters.
-
-For each simulation run:
-
-1. Random parameter values are generated according to the configured statistical models.
-2. The circuit is simulated using those parameter values.
-3. The selected output measurements are recorded.
-4. The process is repeated for the specified number of runs.
-5. The resulting measurements are analyzed statistically.
-
-The output can be represented using histograms and statistical distributions.
-
-## 14.4 Monte Carlo Simulation Procedure
-
-The general procedure in Cadence Virtuoso is:
-
-1. Open the designed circuit schematic.
-2. Launch the simulation environment.
-3. Configure the required analysis.
-4. Select Monte Carlo or statistical variation analysis.
-5. Enable the appropriate process or mismatch variation models.
-6. Specify the number of simulation runs.
-7. Configure the required output measurements.
-8. Execute the statistical simulations.
-9. Observe the output waveforms and statistical distributions.
-10. Analyze the variation in the measured circuit parameters.
-
-The exact configuration depends on the selected PDK statistical models and the simulation environment.
-
-## 14.5 Statistical Parameters
-
-Common statistical measurements include:
-
-**Mean:**
+The selected input condition is:
 
 \[
-\mu=\frac{1}{N}\sum_{i=1}^{N}x_i
+A=1,\quad B=1,\quad C_{in}=1
 \]
 
-**Variance:**
+For a single Full Adder stage, the binary addition is:
 
 \[
-\sigma^2=\frac{1}{N-1}\sum_{i=1}^{N}(x_i-\mu)^2
+1+1+1=3
 \]
 
-**Standard Deviation:**
+Since decimal 3 is binary 11:
 
 \[
-\sigma=\sqrt{\sigma^2}
+Sum=1,\quad C_{out}=1
 \]
 
-Where:
+This confirms the expected Full Adder behavior for the selected input condition.
 
-- N = Number of simulation runs.
-- xi = Measurement from the ith simulation.
-- μ = Mean measurement.
-- σ = Standard deviation.
+**Important:** If this condition is applied to the complete 8-bit RCA, the exact result depends on how the 8-bit input buses are assigned. For example, if A and B are both assigned the 8-bit value `00000001` and the initial carry is 1, the result is `00000011`, with no final carry.
 
-**Coefficient of Variation:**
+### Simulation Procedure
 
-\[
-CV=\frac{\sigma}{|\mu|}\times100\%
-\]
+1. Open the final 8-bit RCA schematic in Cadence Virtuoso.
+2. Configure the required supply voltage and ground connections.
+3. Apply the required input signals to A, B, and Cin.
+4. Configure the transient simulation.
+5. Run the simulation using Spectre.
+6. Observe the Sum and Carry output waveforms.
+7. Compare the simulated outputs with the expected binary addition result.
 
-These measurements help quantify the spread of circuit performance under the configured statistical variations.
+**8-Bit RCA Simulation Waveform**
 
-## 14.6 Monte Carlo Results
+![8-Bit RCA Simulation](8_Bit_Ripple_Carry_Adder/Simulation.png)
 
-The results should be presented using the actual plots obtained from Cadence Virtuoso.
+### Simulation Verification
 
-Recommended observations include:
+The simulation waveforms are used to verify whether the Sum and Carry outputs follow the expected binary addition behavior.
 
-- Distribution of the selected output parameter.
-- Mean measurement.
-- Standard deviation.
-- Minimum and maximum measured values.
-- Variation across simulation runs.
-- Comparison with nominal simulation results.
+The output waveforms should be checked against the applied input conditions, taking propagation delay into account.
 
-**Number of Monte Carlo Runs:** [Enter actual number]
+## 9.7 Layout Design
 
-**Variation Model:** [Process / Mismatch / Both, as configured]
+After completing the schematic simulation, the physical layout of the 8-bit RCA is implemented.
 
-**Measured Parameter:** [Enter actual parameter]
+The layout contains the eight Full Adder stages and their interconnections. Particular attention is given to the carry propagation path because the carry signal travels through successive stages.
 
-**Mean:** [Enter measured value]
+The layout implementation includes:
 
-**Standard Deviation:** [Enter measured value]
+- Placement of transistor structures.
+- Interconnections between the Full Adder stages.
+- Routing of input and output signals.
+- VDD and ground connections.
+- Physical design-rule requirements.
 
-**Observation:** [Describe the actual statistical results]
+The final layout represents the physical implementation of the complete 8-bit RCA circuit.
 
-## 14.7 Importance of Monte Carlo Analysis in This Project
+**8-Bit Ripple Carry Adder Layout**
 
-Monte Carlo analysis provides an additional level of statistical evaluation beyond nominal circuit simulation.
+![8-Bit RCA Layout](8_Bit_Ripple_Carry_Adder/Layout.png)
 
-It helps investigate the sensitivity of the designed CMOS circuit to device variations and provides useful insight into the consistency of its electrical response.
+## 9.8 Design Rule Check (DRC)
 
-However, statistical analysis does not replace physical verification, and the interpretation of results depends on the statistical models enabled in the technology library.
+Design Rule Check is performed on the completed RCA layout to verify whether the layout satisfies the physical design rules of the selected technology.
 
----
+The verification checks geometrical constraints such as:
 
-# 15. COMPLETE PROJECT DESIGN FLOW
+- Minimum width.
+- Minimum spacing.
+- Enclosure requirements.
+- Layer-specific design constraints.
 
-The overall implementation follows the hierarchical digital VLSI design methodology illustrated below.
+DRC helps identify physical layout violations before proceeding to further verification.
 
-```text
-             CMOS FUNDAMENTALS
-                    |
-                    v
-              CMOS INVERTER
-                    |
-                    v
-               NAND GATE
-                    |
-                    v
-                 OR GATE
-                    |
-                    v
-                XOR GATE
-                    |
-                    v
-                HALF ADDER
-                    |
-                    v
-                FULL ADDER
-                    |
-                    v
-          8-BIT RIPPLE CARRY ADDER
-                    |
-                    v
-              SCHEMATIC DESIGN
-                    |
-                    v
-             FUNCTIONAL SIMULATION
-                    |
-                    v
-                LAYOUT DESIGN
-                    |
-                    v
-              DRC VERIFICATION
-                    |
-                    v
-             MONTE CARLO ANALYSIS
-                    |
-                    v
-             FINAL RESULTS & REPORT
-```
+**8-Bit RCA DRC Result**
 
----
+![8-Bit RCA DRC](DRC_Reports/RCA_DRC.png)
 
-# 16. PROJECT RESULTS AND DOCUMENTATION
+## 9.9 Monte Carlo Analysis
 
-The following results are included in the project repository.
+### Introduction
 
-| Circuit | Schematic | Layout | Simulation |
-|---|:---:|:---:|:---:|
-| Inverter | ✓ | ✓ | ✓ |
-| NAND Gate | ✓ | ✓ | ✓ |
-| OR Gate | ✓ | ✓ | ✓ |
-| XOR Gate | ✓ | ✓ | ✓ |
-| Half Adder | ✓ | ✓ | ✓ |
-| Full Adder | ✓ | ✓ | ✓ |
-| 8-Bit RCA | ✓ | ✓ | ✓ |
+Monte Carlo analysis is performed to study the effect of process and device parameter variations on the performance of the designed 8-bit RCA.
 
-Additional verification documentation:
+In practical CMOS fabrication, transistor parameters may vary due to manufacturing variations. These variations can influence circuit behavior and output waveforms.
 
-| Verification | Documentation |
+Monte Carlo analysis introduces parameter variations across multiple simulation runs and helps evaluate how consistently the circuit operates under those conditions.
+
+### Objective
+
+The main objective is to examine the variation in all eight output nodes, P1 to P8, and understand how device variations affect the final RCA output behavior.
+
+### Simulation Setup
+
+Monte Carlo analysis is configured in Cadence Virtuoso using the available statistical models of the selected technology library.
+
+The setup includes:
+
+1. Selecting the final RCA circuit.
+2. Configuring the required input conditions.
+3. Enabling the Monte Carlo analysis option.
+4. Selecting the available process or mismatch variation models.
+5. Configuring the required number of simulation runs.
+6. Running the analysis.
+7. Observing the output waveforms for P1 to P8.
+
+**Monte Carlo Simulation Setup**
+
+![Monte Carlo Setup](Monte_Carlo_Analysis/Monte_Carlo_Setup.png)
+
+### Analysis of Eight Output Nodes
+
+The Monte Carlo analysis is performed for all eight output nodes.
+
+| Output Node | Purpose of Observation |
 |---|---|
-| Physical Layout | Layout screenshots |
-| DRC | Final DRC report |
-| Monte Carlo | Statistical plots |
-| Functional Verification | Transient waveforms |
+| P1 | Observe output behavior under device variations |
+| P2 | Check output waveform consistency |
+| P3 | Observe the effect of variations on the third output |
+| P4 | Check waveform stability across simulation runs |
+| P5 | Observe output behavior under different parameter conditions |
+| P6 | Examine output consistency |
+| P7 | Observe the seventh output response |
+| P8 | Examine the final output node response |
+
+The waveforms from different Monte Carlo runs are compared to observe the spread and consistency of each output.
+
+If the output waveforms remain within the expected logic levels and maintain the correct functional behavior, this indicates that the circuit is operating consistently under the simulated variations.
+
+Any noticeable waveform spread, timing shift, or incorrect logic-level transition can indicate sensitivity to device parameter variations.
+
+**Monte Carlo Waveforms – P1 to P8**
+
+![Monte Carlo P1 to P8 Waveforms](Monte_Carlo_Analysis/Monte_Carlo_Waveforms.png)
+
+### Significance of Monte Carlo Analysis
+
+Monte Carlo analysis provides additional verification beyond ordinary transient simulation.
+
+It helps to:
+
+- Understand the effect of transistor variations.
+- Observe output consistency across multiple runs.
+- Identify outputs that are more sensitive to device variations.
+- Evaluate the robustness of the complete RCA design.
+
+This analysis is useful for understanding the reliability of the final circuit under modeled fabrication variations.
 
 ---
 
-# 17. REPOSITORY STRUCTURE
+# 10. Conclusion
+
+This project demonstrates the complete design flow of fundamental CMOS logic gates and an 8-bit Ripple Carry Adder using Cadence Virtuoso.
+
+The implementation begins with basic logic gates, followed by Half Adder and Full Adder circuits. These arithmetic blocks are then used to construct the final 8-bit RCA.
+
+The final circuit is evaluated through schematic simulation, physical layout implementation, DRC verification, and Monte Carlo analysis of the eight output nodes P1 to P8.
+
+The project provides practical experience in transistor-level CMOS design, arithmetic circuit implementation, physical layout development, and variation-aware circuit verification.
+
+---
+
+# 11. Repository Structure
 
 ```text
 8-bit-ripple-carry-adder-cmos/
 │
 ├── README.md
 │
-├── Inverter/
-│   ├── Schematic/
-│   ├── Layout/
-│   └── Simulation/
-│
-├── NAND_Gate/
-│   ├── Schematic/
-│   ├── Layout/
-│   └── Simulation/
-│
-├── OR_Gate/
-│   ├── Schematic/
-│   ├── Layout/
-│   └── Simulation/
-│
-├── XOR_Gate/
-│   ├── Schematic/
-│   ├── Layout/
-│   └── Simulation/
+├── CMOS_Basic_Gates/
+│   ├── Inverter/
+│   │   ├── Schematic.png
+│   │   └── Layout.png
+│   │
+│   ├── NAND/
+│   │   ├── Schematic.png
+│   │   └── Layout.png
+│   │
+│   ├── OR/
+│   │   ├── Schematic.png
+│   │   └── Layout.png
+│   │
+│   └── XOR/
+│       ├── Schematic.png
+│       └── Layout.png
 │
 ├── Half_Adder/
-│   ├── Schematic/
-│   ├── Layout/
-│   └── Simulation/
+│   ├── Schematic.png
+│   └── Layout.png
 │
 ├── Full_Adder/
-│   ├── Schematic/
-│   ├── Layout/
-│   └── Simulation/
+│   ├── Schematic.png
+│   └── Layout.png
 │
 ├── 8_Bit_Ripple_Carry_Adder/
-│   ├── Schematic/
-│   ├── Layout/
-│   ├── Simulation/
-│   ├── DRC/
-│   └── Monte_Carlo/
+│   ├── Schematic.png
+│   ├── Simulation.png
+│   └── Layout.png
 │
-└── Results/
-    ├── Waveforms/
-    ├── Layout_Screenshots/
-    └── Statistical_Plots/
+├── DRC_Reports/
+│   └── RCA_DRC.png
+│
+└── Monte_Carlo_Analysis/
+    ├── Monte_Carlo_Setup.png
+    └── Monte_Carlo_Waveforms.png
 ```
 
 ---
 
-# 18. KEY LEARNING OUTCOMES
+# 12. Author
 
-Through this project, the following concepts and practical skills were explored:
+**V. Abhinav**  
+Department of Electronics and Communication Engineering  
+IIITDM Kurnool
 
-- Understanding PMOS and NMOS transistor operation.
-- Designing CMOS combinational logic circuits.
-- Implementing inverter, NAND, OR and XOR gates.
-- Understanding arithmetic circuit fundamentals.
-- Designing Half Adder and Full Adder circuits.
-- Understanding carry generation and propagation.
-- Integrating multiple Full Adders into an 8-bit RCA.
-- Performing transistor-level schematic design.
-- Developing custom physical layouts.
-- Understanding layout design rules.
-- Performing DRC verification.
-- Investigating process variations using Monte Carlo simulation.
-- Understanding the hierarchical design methodology used in digital VLSI development.
-
----
-
-# 19. CONCLUSION
-
-This project demonstrates the complete design and implementation of CMOS digital circuits, beginning with fundamental logic gates and progressing towards an 8-bit Ripple Carry Adder.
-
-The hierarchical design methodology provided practical exposure to transistor-level circuit design, arithmetic logic implementation, schematic simulation and physical layout development.
-
-The physical layouts were subjected to Design Rule Check to evaluate compliance with the selected technology design rules. Monte Carlo analysis was additionally performed to investigate the impact of statistical device variations on circuit performance.
-
-Overall, the project provided hands-on experience with the full-custom digital VLSI design flow and strengthened the understanding of CMOS logic design, arithmetic circuit architecture, physical implementation and statistical circuit analysis.
-
----
-
-# 20. AUTHOR
-
-**V. Abhinav**
-
-Electronics and Communication Engineering (ECE)
-
-Indian Institute of Information Technology Design and Manufacturing, Kurnool (IIITDM Kurnool)
-
----
-
-## TECHNOLOGIES AND KEYWORDS
-
-`VLSI` `CMOS Technology` `Cadence Virtuoso` `45nm CMOS` `Transistor-Level Design` `Inverter` `NAND Gate` `OR Gate` `XOR Gate` `Half Adder` `Full Adder` `8-Bit Ripple Carry Adder` `Schematic Design` `Layout Design` `DRC Verification` `Monte Carlo Analysis` `Digital IC Design`
-
----
-
-<p align="center">
-  <b>Full-Custom CMOS Digital VLSI Design</b>
-  <br>
-  Designed and Implemented Using Cadence Virtuoso
-</p>
