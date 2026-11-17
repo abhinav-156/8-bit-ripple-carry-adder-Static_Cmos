@@ -481,7 +481,7 @@ The schematic represents the complete transistor-level implementation of the 8-b
 
 **8-Bit Ripple Carry Adder Schematic**
 
-![8-Bit RCA Schematic](8bit_Riplle_Carry_Adder_schematic)
+![8-Bit RCA Schematic](8bit_Riplle_Carry_Adder_schematic.jpeg)
 
 ## 9.6 Simulation and Functional Verification
 
