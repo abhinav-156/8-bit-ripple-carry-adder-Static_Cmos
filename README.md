@@ -121,9 +121,7 @@ The PMOS transistor acts as the pull-up network, while the NMOS transistor acts 
 
 ### Boolean Expression
 
-\[
-Y=\overline{A}
-\]
+Y = A'
 
 ### Schematic Design
 
@@ -161,9 +159,7 @@ For all other input combinations, at least one PMOS transistor conducts, produci
 
 ### Boolean Expression
 
-\[
-Y=\overline{A\cdot B}
-\]
+Y = (A · B)'
 
 ### Schematic Design
 
@@ -198,9 +194,7 @@ The OR function can be implemented using a NOR gate followed by a CMOS inverter.
 
 ### Boolean Expression
 
-\[
-Y=A+B
-\]
+Y = A + B
 
 For a NOR-based implementation:
 
@@ -239,9 +233,7 @@ An XOR gate produces a HIGH output when its two inputs are different. It is an i
 
 ### Boolean Expression
 
-\[
-Y=A\oplus B
-\]
+Y = A ⊕ B
 
 \[
 Y=\overline{A}B+A\overline{B}
@@ -277,15 +269,11 @@ It consists of XOR logic for Sum generation and AND logic for Carry generation.
 
 **Sum:**
 
-\[
-S=A\oplus B
-\]
+Sum = A ⊕ B 
 
 **Carry:**
 
-\[
-C=A\cdot B
-\]
+Carry = A · B
 
 ### Schematic Design
 
@@ -326,15 +314,11 @@ A Full Adder is the fundamental building block of the 8-bit Ripple Carry Adder.
 
 **Sum:**
 
-\[
-S=A\oplus B\oplus C_{in}
-\]
+Sum = A ⊕ B ⊕ Cin
 
 **Carry:**
 
-\[
-C_{out}=AB+AC_{in}+BC_{in}
-\]
+Cout = AB + ACin + BCin
 
 An equivalent carry expression is:
 
