@@ -576,6 +576,61 @@ This analysis is useful for understanding the reliability of the final circuit u
 
 ---
 
+## 🛠️ Simulation Environment & Setup
+
+* **EDA Tool:** Cadence Virtuoso Analog Design Environment (ADE L) `6.1.8-64b`
+* **Testbench / Cell Name:** `ripple 4bit_ri...`
+* **Supply Voltage ($V_{DD}$):** $1.8\text{ V}$
+* **Threshold Voltage Reference ($V_{th}$):** $0.9\text{ V}$ ($50\%$ of $V_{DD}$)
+* **Monitored Outputs:** `P0` through `P8`, Input/Output Nets (`/P5`, `/net2`), and Supply Current (`/V0/PLUS`)
+
+## 📊 Simulation Results & Performance Metrics
+
+The transient simulation evaluates propagation delays and average power consumption across the circuit at a $1.8\text{ V}$ supply.
+
+### 1. Timing & Propagation Delay Analysis
+
+Delay measurements were taken between `/net2` and output node `/P5` at the $50\%$ logic transition threshold ($0.9\text{ V}$):
+
+| Parameter | Expression / Measurement Path | Measured Value |
+| :--- | :--- | :--- |
+| **Rising Propagation Delay ($t_{pLH}$)** | `/net2` (falling) $\rightarrow$ `/P5` (rising) @ $0.9\text{ V}$ | 8.98317 ns |
+| **Falling Propagation Delay ($t_{pHL}$)** | `/net2` (rising) $\rightarrow$ `/P5` (falling) @ $0.9\text{ V}$ | -10.2741 ns |
+| **Average Propagation Delay ($t_{pd}$)** | $\frac{t_{pLH} + t_{pHL}}{2}$ | -645.457 ps |
+
+> **Note on Negative Delay Values:** The negative values observed in $t_{pHL}$ and $t_{pd}$ occur because the chosen edge indices (`?nth1 1` and `?nth2 1`) in the Cadence Calculator compared an output transition occurring *prior* to the selected input reference edge. To obtain absolute positive propagation delays, align the edge numbers (`?nth1` and `?nth2`) to corresponding causal transitions in the waveform viewer.
+
+### 2. Current & Power Consumption
+
+Power metrics were calculated using the average current drawn from the primary DC voltage source (`V0/PLUS`) operating at $1.8\text{ V}$:
+
+| Parameter | Cadence ADE Expression | Measured Value | Magnitude |
+| :--- | :--- | :--- | :--- |
+| **Average Supply Current ($I_{avg}$)** | `average(IT("/V0/PLUS"))` | -431.717 nA | 431.717 nA |
+| **Average Power Dissipation ($P_{avg}$)** | `average(IT("/V0/PLUS")) * 1.8` | -777.09 nW | 777.09 nW |
+
+
+| Quantity | Formula |
+|----------|---------|
+| Propagation delay | tpd = (tPHL + tPLH) / 2 |
+| Average power | P_avg = VDD × I_avg |
+| Power-Delay Product | PDP = P_avg × tpd |
+| Energy-Delay Product | EDP = PDP × tpd |
+
+### 8.4 Calculations
+
+| Quantity | Result |
+|----------|--------|
+| tpd   | **-645.457 ps** |
+| P_avg | **777.09 nW** |
+| PDP  | **605.086a** |
+| EDP  | **-8.06724e-27s** |
+| RC | 3.25578 x 260.741a | **848.915a** |
+
+> **Note on Sign Convention:** In SPICE/Spectre simulations, current leaving the positive terminal of a voltage source (`V0/PLUS`) is reported as negative, indicating power delivered *by* the source to the circuit.
+
+
+
 # 10. Conclusion
 
 This project demonstrates the complete design flow of fundamental CMOS logic gates and an 8-bit Ripple Carry Adder using Cadence Virtuoso.
